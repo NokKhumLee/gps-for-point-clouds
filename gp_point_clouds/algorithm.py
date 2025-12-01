@@ -52,6 +52,8 @@ class SubsetAlgorithm:
         y = self.curv[random_idx]
         self.y = torch.nan_to_num(y, nan=0.0).to(device)
         self.X = {"idx": X_idx.to(device), "coords": X_coords.to(device)}
+        # Store mapping from subset indices to original indices
+        self.random_idx = random_idx.to(device)
 
         # Select an even smaller set of random datapoints to estimate gp hyperparameters
         opt_subset_idx = torch.randperm(self.X["idx"].shape[0])[:opt_subset_size]
@@ -220,5 +222,8 @@ class SubsetAlgorithm:
             ),
             axis=1,
         )
+        
+        # Map subset indices back to original point cloud indices
+        original_indices = self.random_idx[active_set_idx].cpu().numpy()
 
-        return simp_coords, simp_loop_time
+        return simp_coords, simp_loop_time, original_indices

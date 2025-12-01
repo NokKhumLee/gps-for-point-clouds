@@ -107,7 +107,7 @@ alg = SubsetAlgorithm(
     initial_set_size,
     device,
 )
-simp_coords, simp_loop_time = alg.run()
+simp_coords, simp_loop_time, _ = alg.run()
 total_stop2 = time.time()
 total_time = total_stop2 - total_start2 + total_stop1 - total_start1
 
